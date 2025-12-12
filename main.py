@@ -286,16 +286,38 @@ def remover_do_carrinho(cliente, produtos):
         for item in itens:
             if item['produto'].get_id() == produto_id:
                 produto = item['produto']
-                quantidade = item['quantidade']
+                quantidade_no_carrinho = item['quantidade']
+                
+                # Pergunta a quantidade a remover
+                quantidade_remover = int(input(f"Quantidade a remover (disponível no carrinho: {quantidade_no_carrinho}): "))
+                
+                # Condicional: valida quantidade
+                if quantidade_remover <= 0:
+                    print("[ERRO] Quantidade inválida!")
+                    return
+                
+                if quantidade_remover > quantidade_no_carrinho:
+                    print("[ERRO] Quantidade maior que a disponível no carrinho!")
+                    return
                 
                 # DEVOLVE AO ESTOQUE
-                novo_estoque = produto.get_estoque() + quantidade
+                novo_estoque = produto.get_estoque() + quantidade_remover
                 produto.set_estoque(novo_estoque)
                 
-                # Remove do carrinho
-                carrinho.remover_item(produto_id)
+                # Condicional: remove parcial ou total
+                if quantidade_remover == quantidade_no_carrinho:
+                    # Remove item completamente do carrinho
+                    carrinho.remover_item(produto_id)
+                    print(f"[OK] {quantidade_remover}x {produto.get_nome()} removido(s) do carrinho!")
+                else:
+                    # Atualiza quantidade no carrinho
+                    nova_quantidade = quantidade_no_carrinho - quantidade_remover
+                    # Remove e adiciona novamente com nova quantidade
+                    carrinho.remover_item(produto_id)
+                    carrinho.adicionar_item(produto, nova_quantidade)
+                    print(f"[OK] {quantidade_remover}x {produto.get_nome()} removido(s) do carrinho!")
+                    print(f"[CARRINHO] Restam {nova_quantidade} unidade(s) no carrinho")
                 
-                print(f"[OK] {produto.get_nome()} removido do carrinho!")
                 print(f"[ESTOQUE] Estoque devolvido: {novo_estoque} unidades")
                 return
         
