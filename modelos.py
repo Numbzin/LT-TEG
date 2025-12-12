@@ -11,6 +11,38 @@ from abc import ABC, abstractmethod
 
 
 # =============================================================================
+# FUNÇÃO AUXILIAR: VALIDAÇÃO DE CPF
+# =============================================================================
+
+def validar_cpf(cpf):
+    """
+    Valida CPF usando o algoritmo oficial.
+    Retorna True se válido, False caso contrário.
+    """
+    # Remove caracteres não numéricos
+    cpf = ''.join(filter(str.isdigit, cpf))
+    
+    # Verifica se tem 11 dígitos
+    if len(cpf) != 11:
+        return False
+    
+    # Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
+    if cpf == cpf[0] * 11:
+        return False
+    
+    # Calcula o primeiro dígito verificador
+    soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
+    digito1 = (soma * 10 % 11) % 10
+    
+    # Calcula o segundo dígito verificador
+    soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
+    digito2 = (soma * 10 % 11) % 10
+    
+    # Verifica se os dígitos calculados conferem
+    return cpf[-2:] == f"{digito1}{digito2}"
+
+
+# =============================================================================
 # CLASSE ABSTRATA (Abstração)
 # =============================================================================
 
@@ -289,6 +321,9 @@ class Cliente:
         Construtor: cria cliente com carrinho vazio.
         COMPOSIÇÃO: Instancia CarrinhoDeCompras
         """
+        if not validar_cpf(cpf):
+            raise ValueError("CPF inválido")
+        
         self.__nome = nome
         self.__cpf = cpf
         self.__carrinho = CarrinhoDeCompras()  # Composição

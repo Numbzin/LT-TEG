@@ -9,6 +9,8 @@ Responsável: Player 3
 """
 
 import json
+import os
+from pathlib import Path
 from modelos import Produto, Livro, Eletronico, Cliente
 from motor_logico import (
     filtrar_por_categoria,
@@ -24,13 +26,24 @@ from motor_logico import (
 # FUNÇÕES DE CARREGAMENTO E PERSISTÊNCIA
 # =============================================================================
 
+def obter_caminho_dados():
+    """
+    Retorna o caminho absoluto do arquivo dados.json
+    """
+    # Obtém o diretório onde o script está localizado
+    diretorio_script = Path(__file__).parent
+    caminho_dados = diretorio_script / 'dados.json'
+    return caminho_dados
+
+
 def carregar_produtos_do_json():
     """
     Carrega produtos do arquivo JSON e cria objetos.
     Retorna lista de objetos Produto (Livro ou Eletronico)
     """
     try:
-        with open('dados.json', 'r', encoding='utf-8') as arquivo:
+        caminho_arquivo = obter_caminho_dados()
+        with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
             produtos = []
             
@@ -439,15 +452,22 @@ def main():
         print("[ERRO] Não foi possível carregar os produtos!")
         return
     
-    # Cadastro do cliente
+    # Cadastro do cliente com validação
     print("\n[CADASTRO]")
-    nome = input("Nome: ").strip()
-    cpf = input("CPF: ").strip()
+    cliente = None
     
-    # PARADIGMA OO: cria objeto Cliente
-    cliente = Cliente(nome, cpf)
-    
-    print(f"\n[BEM-VINDO] Olá, {nome}!")
+    # Loop WHILE: repete até CPF válido
+    while cliente is None:
+        nome = input("Nome: ").strip()
+        cpf = input("CPF: ").strip()
+        
+        try:
+            # PARADIGMA OO: cria objeto Cliente (valida CPF)
+            cliente = Cliente(nome, cpf)
+            print(f"\n[BEM-VINDO] Olá, {nome}!")
+        except ValueError as e:
+            print(f"\n[ERRO] {e}")
+            print("[AVISO] Tente novamente com um CPF válido!\n")
     
     # =============================================================================
     # PARADIGMA ESTRUTURADO - LOOP WHILE
