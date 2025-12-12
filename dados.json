@@ -1,0 +1,58 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Clean Code",
+      "preco": 89.9,
+      "estoque": 13,
+      "tipo": "livro",
+      "autor": "Robert C. Martin",
+      "editora": "Alta Books"
+    },
+    {
+      "id": 2,
+      "nome": "Python Fluente",
+      "preco": 120.0,
+      "estoque": 8,
+      "tipo": "livro",
+      "autor": "Luciano Ramalho",
+      "editora": "Novatec"
+    },
+    {
+      "id": 3,
+      "nome": "Mouse Gamer RGB",
+      "preco": 150.0,
+      "estoque": 20,
+      "tipo": "eletronico",
+      "marca": "Logitech",
+      "garantia_meses": 12
+    },
+    {
+      "id": 4,
+      "nome": "Teclado Mecânico",
+      "preco": 350.0,
+      "estoque": 10,
+      "tipo": "eletronico",
+      "marca": "Redragon",
+      "garantia_meses": 24
+    },
+    {
+      "id": 5,
+      "nome": "Design Patterns",
+      "preco": 95.0,
+      "estoque": 5,
+      "tipo": "livro",
+      "autor": "Gang of Four",
+      "editora": "Bookman"
+    },
+    {
+      "id": 6,
+      "nome": "Webcam Full HD",
+      "preco": 280.0,
+      "estoque": 0,
+      "tipo": "eletronico",
+      "marca": "Logitech",
+      "garantia_meses": 12
+    }
+  ]
+}
