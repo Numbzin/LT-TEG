@@ -478,9 +478,21 @@ def main():
     print("\n[CADASTRO]")
     cliente = None
     
-    # Loop WHILE: repete até CPF válido
+    # Loop WHILE: repete até dados válidos
     while cliente is None:
         nome = input("Nome: ").strip()
+        
+        # Condicional: valida se nome contém apenas letras e espaços
+        if not nome.replace(" ", "").isalpha():
+            print("\n[ERRO] Nome inválido! Use apenas letras.")
+            print("[AVISO] Tente novamente!\n")
+            continue
+        
+        if not nome:
+            print("\n[ERRO] Nome não pode estar vazio!")
+            print("[AVISO] Tente novamente!\n")
+            continue
+        
         cpf = input("CPF: ").strip()
         
         try:
